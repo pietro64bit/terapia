@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Mind | Terapia e Bem-estar</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght=700&family=Quicksand:wght=400;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="borda-decorativa decorativa-top"></div>
+    <div class="borda-decorativa decorativa-bottom"></div>
+
+    <nav>
+        <div class="nav-esquerda">
+            <div class="logo">
+                <img src="tree.png" alt="Logo Árvore da Vida" class="logo-img-flutuante">
+                <span>Master Mind</span>
+            </div>
+            <button class="btn-login-nav" onclick="abrirModal('modal-login')">
+                <i class="fa-solid fa-user-lock"></i> Entrar
+            </button>
+            
+            <div class="dropdown-futuro">
+                <button class="btn-explorar">Explorar Conteúdos <i class="fa-solid fa-chevron-down"></i></button>
+                <div class="dropdown-conteudo-abas">
+                    <a href="#explorar-conteudos" onclick="mudarAba('saude-mental')"><i class="fa-solid fa-seedling"></i> Métodos para Saúde Mental</a>
+                    <a href="#explorar-conteudos" onclick="mudarAba('respiracao')"><i class="fa-solid fa-wind"></i> Exercícios de Respiração</a>
+                    <a href="#explorar-conteudos" onclick="mudarAba('diario')"><i class="fa-solid fa-book-open"></i> Diário de Evolução</a>
+                </div>
+            </div>
+        </div>
+        
+        <ul class="nav-links">
+            <li><a href="#">Início</a></li>
+            <li><a href="#sobre">Sobre Mim</a></li>
+            <li><a href="#abordagem">Abordagem</a></li>
+            <li><a href="#contato">Contato</a></li>
+        </ul>
+    </nav>
+
+    <div id="modal-login" class="modal-auth">
+        <div class="modal-conteudo">
+            <span class="fechar-modal" onclick="fecharModal('modal-login')">&times;</span>
+            
+            <div class="modal-logo-wrapper">
+                <img src="tree.png" alt="Logo Árvore" class="logo-img-modal">
+            </div>
+
+            <h3>Acessar Minha Conta</h3>
+            <form class="form-auth" onsubmit="event.preventDefault();">
+                <div class="input-grupo">
+                    <label><i class="fa-solid fa-envelope"></i> E-mail</label>
+                    <input type="email" id="email-login" placeholder="seuemail@exemplo.com" required>
+                </div>
+                <div class="input-grupo">
+                    <label><i class="fa-solid fa-key"></i> Senha</label>
+                    <input type="password" id="senha-login" placeholder="Digite sua senha" required>
+                </div>
+                <button type="submit" class="btn-auth-acao">Entrar</button>
+            </form>
+            <p class="texto-alternar-auth">Caso não tenha conta, <a href="#" onclick="alternarAuth('modal-login', 'modal-cadastro')">clique aqui</a>.</p>
+        </div>
+    </div>
+
+    <div id="modal-cadastro" class="modal-auth">
+        <div class="modal-conteudo">
+            <span class="fechar-modal" onclick="fecharModal('modal-cadastro')">&times;</span>
+            
+            <div class="modal-logo-wrapper">
+                <img src="tree.png" alt="Logo Árvore" class="logo-img-modal">
+            </div>
+
+            <h3>Criar Nova Conta</h3>
+            <form class="form-auth" onsubmit="event.preventDefault();">
+                <div class="input-grupo">
+                    <label><i class="fa-solid fa-envelope"></i> E-mail</label>
+                    <input type="email" id="email-cadastro" placeholder="seuemail@exemplo.com" required>
+                </div>
+                <div class="input-grupo">
+                    <label><i class="fa-solid fa-lock"></i> Senha</label>
+                    <input type="password" id="senha-cadastro" placeholder="Crie uma senha forte" required>
+                </div>
+                <button type="submit" class="btn-auth-acao">Cadastrar</button>
+            </form>
+            <p class="texto-alternar-auth">Já possui conta? <a href="#" onclick="alternarAuth('modal-cadastro', 'modal-login')">Voltar ao login</a>.</p>
+        </div>
+    </div>
+
+    <header class="hero">
+        <div class="hero-container">
+            <div class="hero-texto">
+                <h1>Master Mind</h1>
+                <p>Encontre o equilíbrio que sua mente precisa com um atendimento humano e acolhedor.</p>
+                <a href="#contato" class="contato-btn">Agendar uma conversa</a>
+            </div>
+            
+            <div class="hero-ilustracao">
+                <img src="tree.png" alt="Árvore da Vida" class="tree-flutuante-destaque">
+            </div>
+        </div>
+    </header>
+
+    <section id="explorar-conteudos" class="secao-abas">
+        <h2 class="titulo-secao">Espaço de Desenvolvimento</h2>
+        
+        <div class="abas-botoes">
+            <button class="aba-btn ativa" onclick="mudarAba('saude-mental')"><i class="fa-solid fa-seedling"></i> Métodos Clínicos</button>
+            <button class="aba-btn" onclick="mudarAba('respiracao')"><i class="fa-solid fa-wind"></i> Guia de Respiração</button>
+            <button class="aba-btn" onclick="mudarAba('diario')"><i class="fa-solid fa-book-open"></i> Meu Diário</button>
+        </div>
+
+        <div id="saude-mental" class="aba-conteudo ativa">
+            <div class="grid-metodos">
+                <div class="metodo-card">
+                    <span class="tag-metodo">TCC</span>
+                    <h3>Reestruturação Cognitiva</h3>
+                    <p>Aprenda a identificar e questionar pensamentos automáticos para reduzir a ansiedade instantaneamente.</p>
+                </div>
+                <div class="metodo-card">
+                    <span class="tag-metodo">Foco</span>
+                    <h3>Atenção Plena (Mindfulness)</h3>
+                    <p>Exercícios de ancoragem sensorial para trazer sua mente de volta ao momento presente durante momentos de estresse.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="respiracao" class="aba-conteudo">
+            <div class="container-respiracao">
+                <h3>Respiração Quadrada (Box Breathing)</h3>
+                <p class="sub-respiracao">Técnica clínica utilizada para acalmar o sistema nervoso em momentos de pico de ansiedade.</p>
+                
+                <div class="caixa-respiracao-guiada">
+                    <div class="circulo-respiracao-wrapper">
+                        <div class="circulo-respiracao-pulsante"></div>
+                        <div class="texto-fase-respiracao">
+                            <span class="fase-1">Puxe o ar (4s)</span>
+                            <span class="fase-2">Segure (4s)</span>
+                            <span class="fase-3">Solte o ar (4s)</span>
+                            <span class="fase-4">Aguarde (4s)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="diario" class="aba-conteudo">
+            <div class="container-diario">
+                <h3>Registro Emocional</h3>
+                <p>Escreva como foi o seu dia para organizar suas ideias e aliviar a sobrecarga mental.</p>
+                <textarea placeholder="Escreva aqui seus pensamentos..."></textarea>
+                <button class="contato-btn">Salvar Nota</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre" class="secao-sobre-ampla">
+        <div class="sobre-container-full">
+            <div class="sobre-cabecalho">
+                <span class="badge-sobre"><i class="fa-solid fa-heart-pulse"></i> Propósito & Filosofia</span>
+                <h2>Sobre o Master Mind & Atuação Clínica</h2>
+            </div>
+            
+            <div class="sobre-grid-texto">
+                <div class="sobre-bloco-principal">
+                    <p class="texto-destaque-sobre">
+                        O <strong>Master Mind</strong> nasceu do desejo profundo de transformar a maneira como lidamos com as emoções diárias, oferecendo um espaço seguro, acolhedor e livre de julgamentos.
+                    </p>
+                    <p>
+                        Acreditamos que a saúde mental não é a ausência de problemas, mas sim a capacidade de desenvolver ferramentas internas para atravessar momentos de crise com clareza, autonomia e serenidade.
+                    </p>
+                </div>
+
+                <div class="sobre-cards-pilares">
+                    <div class="pilar-card">
+                        <div class="pilar-icone"><i class="fa-solid fa-brain"></i></div>
+                        <h4>Abordagem Científica</h4>
+                        <p>Utilizamos estratégias baseadas na Terapia Cognitivo-Comportamental (TCC) e práticas validadas de Mindfulness.</p>
+                    </div>
+
+                    <div class="pilar-card">
+                        <div class="pilar-icone"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                        <h4>Acolhimento Humano</h4>
+                        <p>Cada indivíduo possui um tempo e um ritmo único. Respeitamos sua trajetória e adaptamos o processo ao seu cotidiano.</p>
+                    </div>
+
+                    <div class="pilar-card">
+                        <div class="pilar-icone"><i class="fa-solid fa-compass"></i></div>
+                        <h4>Desenvolvimento Prático</h4>
+                        <p>Foco em soluções reais, com exercícios de regulação emocional e autoconhecimento aplicáveis no dia a dia.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contato" class="contato-secao">
+        <h2 class="titulo-secao">Vamos Conversar?</h2>
+        <p>O primeiro passo para o seu equilíbrio começa com um simples contato.</p>
+        <a href="https://wa.me/" class="contato-btn" target="_blank">
+            <i class="fa-brands fa-whatsapp"></i> Chamar no WhatsApp
+        </a>
+    </section>
+
+    <footer>
+        <p>Master Mind &copy; 2026 | Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="login.js"></script>
+</body>
+</html>
