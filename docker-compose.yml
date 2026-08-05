@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  # BANCO DE DADOS MYSQL
+  db:
+    image: mysql:8.0
+    container_name: mastermind_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mastermind_db
+      MYSQL_USER: mastermind_user
+      MYSQL_PASSWORD: mastermind_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # API BACKEND (NODE.JS)
+  backend:
+    build: .
+    container_name: mastermind_backend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: db
+      DB_USER: mastermind_user
+      DB_PASSWORD: mastermind_password
+      DB_NAME: mastermind_db
+      PORT: 3000
+    depends_on:
+      db:
+        condition: service_healthy # Aguarda o banco ficar PRONTO antes de subir a API
+
+volumes:
+  db_data:

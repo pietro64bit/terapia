@@ -11,7 +11,7 @@ app.use(express.json());
 // Conexão com o banco MySQL rodando no Docker
 const db = mysql.createConnection({
     host: 'localhost',
-    port: 3306,
+    port: 9405,
     user: 'root',
     password: 'admin', // Senha configurada no container
     database: 'master_mind'

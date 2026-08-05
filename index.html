@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght=700&family=Quicksand:wght=400;600&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -24,9 +23,12 @@
                 <img src="tree.png" alt="Logo Árvore da Vida" class="logo-img-flutuante">
                 <span>Master Mind</span>
             </div>
-            <button class="btn-login-nav" onclick="abrirModal('modal-login')">
-                <i class="fa-solid fa-user-lock"></i> Entrar
-            </button>
+            
+            <div id="area-autenticacao">
+                <button class="btn-login-nav" onclick="abrirModal('modal-login')">
+                    <i class="fa-solid fa-user-lock"></i> Entrar
+                </button>
+            </div>
             
             <div class="dropdown-futuro">
                 <button class="btn-explorar">Explorar Conteúdos <i class="fa-solid fa-chevron-down"></i></button>
@@ -34,6 +36,7 @@
                     <a href="#explorar-conteudos" onclick="mudarAba('saude-mental')"><i class="fa-solid fa-seedling"></i> Métodos para Saúde Mental</a>
                     <a href="#explorar-conteudos" onclick="mudarAba('respiracao')"><i class="fa-solid fa-wind"></i> Exercícios de Respiração</a>
                     <a href="#explorar-conteudos" onclick="mudarAba('diario')"><i class="fa-solid fa-book-open"></i> Diário de Evolução</a>
+                    <a href="#explorar-conteudos" onclick="mudarAba('profissionais')"><i class="fa-solid fa-user-doctor"></i> Encontrar Profissionais</a>
                 </div>
             </div>
         </div>
@@ -41,8 +44,7 @@
         <ul class="nav-links">
             <li><a href="#">Início</a></li>
             <li><a href="#sobre">Sobre Mim</a></li>
-            <li><a href="#abordagem">Abordagem</a></li>
-            <li><a href="#contato">Contato</a></li>
+            <li><a href="#explorar-conteudos">Abordagem</a></li>
         </ul>
     </nav>
 
@@ -55,10 +57,15 @@
             </div>
 
             <h3>Acessar Minha Conta</h3>
-            <form class="form-auth" onsubmit="event.preventDefault();">
+            <div class="dica-teste-login">
+                💡 <strong>Conta de Teste Especialista:</strong><br>
+                E-mail: <code>zokaalan</code> | Senha: <code>admin</code>
+            </div>
+
+            <form class="form-auth" id="form-login" onsubmit="fazerLogin(event)">
                 <div class="input-grupo">
-                    <label><i class="fa-solid fa-envelope"></i> E-mail</label>
-                    <input type="email" id="email-login" placeholder="seuemail@exemplo.com" required>
+                    <label><i class="fa-solid fa-envelope"></i> E-mail / Usuário</label>
+                    <input type="text" id="email-login" placeholder="seuemail@exemplo.com ou zokaalan" required>
                 </div>
                 <div class="input-grupo">
                     <label><i class="fa-solid fa-key"></i> Senha</label>
@@ -81,6 +88,10 @@
             <h3>Criar Nova Conta</h3>
             <form class="form-auth" onsubmit="event.preventDefault();">
                 <div class="input-grupo">
+                    <label><i class="fa-solid fa-user"></i> Nome Completo</label>
+                    <input type="text" id="nome-cadastro" placeholder="Seu nome completo" required>
+                </div>
+                <div class="input-grupo">
                     <label><i class="fa-solid fa-envelope"></i> E-mail</label>
                     <input type="email" id="email-cadastro" placeholder="seuemail@exemplo.com" required>
                 </div>
@@ -88,6 +99,15 @@
                     <label><i class="fa-solid fa-lock"></i> Senha</label>
                     <input type="password" id="senha-cadastro" placeholder="Crie uma senha forte" required>
                 </div>
+                
+                <div class="input-grupo">
+                    <label><i class="fa-solid fa-users"></i> Tipo de Conta</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="tipo_conta" value="paciente" checked> Paciente</label>
+                        <label><input type="radio" name="tipo_conta" value="profissional"> Profissional</label>
+                    </div>
+                </div>
+
                 <button type="submit" class="btn-auth-acao">Cadastrar</button>
             </form>
             <p class="texto-alternar-auth">Já possui conta? <a href="#" onclick="alternarAuth('modal-cadastro', 'modal-login')">Voltar ao login</a>.</p>
@@ -99,7 +119,9 @@
             <div class="hero-texto">
                 <h1>Master Mind</h1>
                 <p>Encontre o equilíbrio que sua mente precisa com um atendimento humano e acolhedor.</p>
-                <a href="#contato" class="contato-btn">Agendar uma conversa</a>
+                <a href="#explorar-conteudos" onclick="mudarAba('profissionais')" class="contato-btn">
+                    <i class="fa-solid fa-user-doctor"></i> Encontrar Profissional
+                </a>
             </div>
             
             <div class="hero-ilustracao">
@@ -115,6 +137,7 @@
             <button class="aba-btn ativa" onclick="mudarAba('saude-mental')"><i class="fa-solid fa-seedling"></i> Métodos Clínicos</button>
             <button class="aba-btn" onclick="mudarAba('respiracao')"><i class="fa-solid fa-wind"></i> Guia de Respiração</button>
             <button class="aba-btn" onclick="mudarAba('diario')"><i class="fa-solid fa-book-open"></i> Meu Diário</button>
+            <button class="aba-btn" onclick="mudarAba('profissionais')"><i class="fa-solid fa-user-doctor"></i> Profissionais</button>
         </div>
 
         <div id="saude-mental" class="aba-conteudo ativa">
@@ -159,6 +182,68 @@
                 <button class="contato-btn">Salvar Nota</button>
             </div>
         </div>
+
+        <div id="profissionais" class="aba-conteudo">
+            <div class="container-profissionais">
+                
+                <div id="painel-exclusivo-profissional" class="painel-profissional-box" style="display: none;">
+                    <div class="painel-header">
+                        <h4><i class="fa-solid fa-user-gear"></i> Painel do Especialista (Modo Teste)</h4>
+                        <span class="tag-exclusiva"><i class="fa-solid fa-lock"></i> Exclusivo para Médicos</span>
+                    </div>
+                    <p>Bem-vindo, <strong>Dr. ZokaAlan</strong>. Aqui estão as suas ferramentas de gestão médica:</p>
+                    
+                    <div class="grid-acoes-profissional">
+                        <button class="btn-acao-prof" onclick="alert('Módulo de Horários: Nenhuma consulta agendada para hoje.')">
+                            <i class="fa-solid fa-calendar-check"></i> Gerenciar Agenda
+                        </button>
+                        <button class="btn-acao-prof" onclick="alert('Módulo de Pacientes: 0 pacientes vinculados.')">
+                            <i class="fa-solid fa-users-medical"></i> Meus Pacientes
+                        </button>
+                        <button class="btn-acao-prof" onclick="alert('Publicar Conteúdo: Recurso para postar exercícios de saúde mental.')">
+                            <i class="fa-solid fa-file-circle-plus"></i> Publicar Método
+                        </button>
+                        <button class="btn-acao-prof" onclick="alert('Configurações: Neurologia | Tel: (19) 98991-2719')">
+                            <i class="fa-solid fa-id-card"></i> Configurar CRM
+                        </button>
+                    </div>
+                </div>
+
+                <h3>Encontre um Profissional</h3>
+                <p style="margin-bottom: 15px;">Busque por especialistas qualificados para te acompanhar.</p>
+
+                <div class="filtros-container" style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <input type="text" id="filtro-especialidade" placeholder="Buscar especialidade (ex: Neurologia, TCC)..." style="padding: 8px 12px; border-radius: 5px; border: 1px solid #ccc; flex: 1;">
+                    <select id="filtro-modalidade" style="padding: 8px 12px; border-radius: 5px; border: 1px solid #ccc;">
+                        <option value="">Todas as modalidades</option>
+                        <option value="online">Online</option>
+                        <option value="presencial">Presencial</option>
+                    </select>
+                    <button class="contato-btn" style="margin: 0;" onclick="carregarProfissionais()"><i class="fa-solid fa-magnifying-glass"></i> Filtrar</button>
+                </div>
+
+                <div id="lista-profissionais" class="grid-metodos">
+                    <div class="card-prof">
+                        <div class="card-prof-avatar">
+                            <i class="fa-solid fa-user-doctor"></i>
+                        </div>
+                        <h3>Dr. ZokaAlan</h3>
+                        <span class="badge-especialidade"><i class="fa-solid fa-brain"></i> Neurologia</span>
+                        <span class="badge-verificado"><i class="fa-solid fa-circle-check"></i> Profissional Verificado</span>
+                        
+                        <p class="prof-descricao">Especialista no tratamento de alterações do sistema nervoso, estresse crônico e regulação neuroemocional.</p>
+                        
+                        <div class="prof-contato-info">
+                            <span><i class="fa-solid fa-phone"></i> (19) 98991-2719</span>
+                        </div>
+                        
+                        <a href="https://wa.me/5519989912719?text=Olá%20Dr.%20ZokaAlan,%20vim%20pelo%20site%20Master%20Mind" target="_blank" class="contato-btn btn-whatsapp-prof">
+                            <i class="fa-brands fa-whatsapp"></i> Entrar em Contato
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <section id="sobre" class="secao-sobre-ampla">
@@ -201,18 +286,10 @@
         </div>
     </section>
 
-    <section id="contato" class="contato-secao">
-        <h2 class="titulo-secao">Vamos Conversar?</h2>
-        <p>O primeiro passo para o seu equilíbrio começa com um simples contato.</p>
-        <a href="https://wa.me/" class="contato-btn" target="_blank">
-            <i class="fa-brands fa-whatsapp"></i> Chamar no WhatsApp
-        </a>
-    </section>
-
     <footer>
         <p>Master Mind &copy; 2026 | Todos os direitos reservados.</p>
     </footer>
 
     <script src="login.js"></script>
 </body>
-</html>
+</html>                                                                         

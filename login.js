@@ -1,169 +1,156 @@
-// URL base da sua API
-const API_URL = 'http://localhost:3000/api';
-
-// ==========================================
-// GERENCIAMENTO DE MODAIS (LOGIN / CADASTRO)
-// ==========================================
-
-function abrirModal(idModal) {
-    const modal = document.getElementById(idModal);
+// CONTROLES DOS MODAIS
+function abrirModal(id) {
+    const modal = document.getElementById(id);
     if (modal) {
         modal.classList.add('ativo');
+        console.log(`[Info] Modal '${id}' aberto com sucesso.`);
+    } else {
+        console.error(`[Erro] Modal com ID '${id}' não foi encontrado no DOM.`);
     }
 }
 
-function fecharModal(idModal) {
-    const modal = document.getElementById(idModal);
+function fecharModal(id) {
+    const modal = document.getElementById(id);
     if (modal) {
         modal.classList.remove('ativo');
+        console.log(`[Info] Modal '${id}' fechado.`);
+    } else {
+        console.error(`[Erro] Modal com ID '${id}' não foi encontrado no DOM.`);
     }
 }
 
-function alternarAuth(modalAtual, proximoModal) {
-    fecharModal(modalAtual);
-    abrirModal(proximoModal);
+function alternarAuth(modalFechar, modalAbrir) {
+    fecharModal(modalFechar);
+    abrirModal(modalAbrir);
 }
 
-// Fechar ao clicar fora da modal
-window.addEventListener('click', (event) => {
-    if (event.target.classList.contains('modal-auth')) {
-        event.target.classList.remove('ativo');
-    }
-});
-
-// ==========================================
-// TROCA DE ABAS (ESPAÇO DE DESENVOLVIMENTO)
-// ==========================================
-
-function mudarAba(idAba) {
-    // Remove classe ativa de todas as abas e botões
-    const conteudos = document.querySelectorAll('.aba-conteudo');
+// TROCA DE ABAS
+function mudarAba(abaId) {
+    const abas = document.querySelectorAll('.aba-conteudo');
     const botoes = document.querySelectorAll('.aba-btn');
-
-    conteudos.forEach(c => c.classList.remove('ativa'));
-    botoes.forEach(b => b.classList.remove('ativa'));
-
-    // Ativa a aba e o botão correspondente
-    const abaSelecionada = document.getElementById(idAba);
+    
+    abas.forEach(aba => aba.classList.remove('ativa'));
+    botoes.forEach(btn => btn.classList.remove('ativa'));
+    
+    const abaSelecionada = document.getElementById(abaId);
     if (abaSelecionada) {
         abaSelecionada.classList.add('ativa');
+        console.log(`[Navegação] Aba alterada para '${abaId}'.`);
+    } else {
+        console.error(`[Erro] Aba de destino com ID '${abaId}' não foi encontrada.`);
     }
 
-    // Marca o botão certo como ativo
-    const btnAtivo = Array.from(botoes).find(b => b.getAttribute('onclick').includes(idAba));
-    if (btnAtivo) {
-        btnAtivo.classList.add('ativa');
+    botoes.forEach(btn => {
+        if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(abaId)) {
+            btn.classList.add('ativa');
+        }
+    });
+}
+
+// LÓGICA DE LOGIN COM SUPORTE AO TESTE "ZOKAALAN / ADMIN" E CAPTURA DE ERROS
+function fazerLogin(event) {
+    try {
+        event.preventDefault();
+        
+        const inputUsuario = document.getElementById('email-login');
+        const inputSenha = document.getElementById('senha-login');
+
+        if (!inputUsuario || !inputSenha) {
+            console.error('[Erro Fatal] Elementos de input do formulário de login não foram localizados.');
+            return;
+        }
+
+        const usuario = inputUsuario.value.trim();
+        const senha = inputSenha.value.trim();
+        
+        if (!usuario || !senha) {
+            console.warn('[Aviso] Tentativa de envio de login com campos incompletos.');
+            alert('Por favor, preencha todos os campos!');
+            return;
+        }
+
+        // LOGIN DO TESTE PROFISSIONAL ZOKAALAN
+        if ((usuario.toLowerCase() === 'zokaalan' || usuario.toLowerCase() === 'zokaalan@mastermind.com') && senha === 'admin') {
+            console.log('[Autenticação] Login como ESPECIALISTA (Dr. ZokaAlan) realizado com sucesso.');
+            efetuarLoginSucesso('Dr. ZokaAlan', 'profissional', 'Neurologia');
+            fecharModal('modal-login');
+            return;
+        }
+        
+        // LOGIN PACIENTE COMUM
+        console.log(`[Autenticação] Login comum realizado para o usuário: "${usuario}".`);
+        efetuarLoginSucesso(usuario.split('@')[0], 'paciente', '');
+        fecharModal('modal-login');
+
+    } catch (erro) {
+        console.error('[Erro Inesperado] Falha ao processar o formulário de login:', erro);
     }
 }
 
-// ==========================================
-// INTEGRAÇÃO COM O BACKEND E BANCO DOCKER
-// ==========================================
+function efetuarLoginSucesso(nome, tipoConta, especialidade) {
+    try {
+        const areaNav = document.getElementById('area-autenticacao');
+        const painelProf = document.getElementById('painel-exclusivo-profissional');
+        
+        if (!areaNav) {
+            console.error('[Erro UI] O container #area-autenticacao não existe na página.');
+            return;
+        }
 
-document.addEventListener('DOMContentLoaded', () => {
-
-    // 1. FORMULÁRIO DE LOGIN
-    const formLogin = document.querySelector('#modal-login form');
-    if (formLogin) {
-        formLogin.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email-login').value;
-            const senha = document.getElementById('senha-login').value;
-
-            try {
-                const res = await fetch(`${API_URL}/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, senha })
-                });
-
-                const dados = await res.json();
-
-                if (res.ok) {
-                    alert('Login efetuado com sucesso!');
-                    // Salva o ID do usuário localmente no navegador
-                    localStorage.setItem('usuario_id', dados.usuario.id);
-                    localStorage.setItem('usuario_email', dados.usuario.email);
-                    fecharModal('modal-login');
-                } else {
-                    alert(dados.erro);
-                }
-            } catch (err) {
-                console.error(err);
-                alert('Erro ao conectar com o servidor! Verifique se o server.js está rodando.');
+        if (tipoConta === 'profissional') {
+            areaNav.innerHTML = `
+                <div class="perfil-logado">
+                    <div class="avatar-header"><i class="fa-solid fa-user-doctor"></i></div>
+                    <div>
+                        <strong>${nome}</strong> <i class="fa-solid fa-circle-check selo-verificado-icon" title="Especialista Verificado"></i>
+                        <button class="btn-sair" onclick="fazerLogout()">Sair</button>
+                    </div>
+                </div>
+            `;
+            
+            if (painelProf) {
+                painelProf.style.display = 'block';
+                console.log('[Painel Profissional] Exibido no topo da aba de profissionais.');
+            } else {
+                console.warn('[Aviso UI] O container #painel-exclusivo-profissional não foi localizado.');
             }
-        });
+            
+            mudarAba('profissionais');
+        } else {
+            areaNav.innerHTML = `
+                <div class="perfil-logado">
+                    <div class="avatar-header">${nome.charAt(0).toUpperCase()}</div>
+                    <div>
+                        <strong>${nome}</strong>
+                        <button class="btn-sair" onclick="fazerLogout()">Sair</button>
+                    </div>
+                </div>
+            `;
+            if (painelProf) painelProf.style.display = 'none';
+        }
+    } catch (erro) {
+        console.error('[Erro UI] Ocorreu uma falha ao renderizar a área logada:', erro);
     }
+}
 
-    // 2. FORMULÁRIO DE CADASTRO
-    const formCadastro = document.querySelector('#modal-cadastro form');
-    if (formCadastro) {
-        formCadastro.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email-cadastro').value;
-            const senha = document.getElementById('senha-cadastro').value;
-
-            try {
-                const res = await fetch(`${API_URL}/cadastro`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, senha })
-                });
-
-                const dados = await res.json();
-
-                if (res.ok) {
-                    alert('Conta cadastrada com sucesso! Faça seu login.');
-                    localStorage.setItem('usuario_id', dados.usuario.id);
-                    alternarAuth('modal-cadastro', 'modal-login');
-                } else {
-                    alert(dados.erro);
-                }
-            } catch (err) {
-                console.error(err);
-                alert('Erro ao conectar com o servidor!');
-            }
-        });
+function fazerLogout() {
+    try {
+        const areaNav = document.getElementById('area-autenticacao');
+        const painelProf = document.getElementById('painel-exclusivo-profissional');
+        
+        if (areaNav) {
+            areaNav.innerHTML = `
+                <button class="btn-login-nav" onclick="abrirModal('modal-login')">
+                    <i class="fa-solid fa-user-lock"></i> Entrar
+                </button>
+            `;
+            console.log('[Autenticação] Usuário encerrou a sessão (Logout).');
+        } else {
+            console.error('[Erro UI] Elemento #area-autenticacao não encontrado ao tentar sair.');
+        }
+        
+        if (painelProf) painelProf.style.display = 'none';
+    } catch (erro) {
+        console.error('[Erro Inesperado] Falha ao executar logout:', erro);
     }
-
-    // 3. BOTÃO DE SALVAR DIÁRIO EMOCIONAL
-    const btnSalvarDiario = document.querySelector('#diario .contato-btn');
-    if (btnSalvarDiario) {
-        btnSalvarDiario.addEventListener('click', async () => {
-            const textarea = document.querySelector('#diario textarea');
-            const texto = textarea.value;
-            const usuarioId = localStorage.getItem('usuario_id');
-
-            if (!usuarioId) {
-                alert('Você precisa estar logado para salvar seu diário!');
-                abrirModal('modal-login');
-                return;
-            }
-
-            if (!texto.trim()) {
-                alert('Escreva algo na caixa de texto antes de salvar.');
-                return;
-            }
-
-            try {
-                const res = await fetch(`${API_URL}/diario`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ usuario_id: usuarioId, texto })
-                });
-
-                const dados = await res.json();
-
-                if (res.ok) {
-                    alert('Anotação registrada com sucesso no banco de dados!');
-                    textarea.value = ''; // Limpa o campo
-                } else {
-                    alert(dados.erro);
-                }
-            } catch (err) {
-                console.error(err);
-                alert('Erro de conexão ao tentar salvar o diário.');
-            }
-        });
-    }
-});
+}
