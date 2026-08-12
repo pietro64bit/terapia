@@ -12,7 +12,7 @@ services:
       MYSQL_USER: mastermind_user
       MYSQL_PASSWORD: mastermind_password
     ports:
-      - "3306:3306"
+      - "9405:3306"
     volumes:
       - db_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -40,4 +40,4 @@ services:
         condition: service_healthy # Aguarda o banco ficar PRONTO antes de subir a API
 
 volumes:
-  db_data:
+  db_data: 

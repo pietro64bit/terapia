@@ -1,56 +1,26 @@
 const express = require('express');
-const mysql = require('mysql2');
 const cors = require('cors');
 
 const app = express();
 
-// Middlewares
+// Middlewares para aceitar JSON e liberar acesso do navegador
 app.use(cors());
 app.use(express.json());
 
-// Conexão com o banco MySQL rodando no Docker
-const db = mysql.createConnection({
-    host: 'localhost',
-    port: 9405,
-    user: 'root',
-    password: 'admin', // Senha configurada no container
-    database: 'master_mind'
-});
+// ==========================================
+// BANCO DE DADOS EM MEMÓRIA (Arrays Temporários)
+// ==========================================
+const usuarios = [
+    { id: 1, email: 'zokaalan', senha: 'admin', tipo: 'profissional', nome: 'Dr. ZokaAlan' }
+];
 
-db.connect((err) => {
-    if (err) {
-        console.error('❌ Erro ao conectar ao MySQL no Docker:', err.message);
-    } else {
-        console.log('🔥 Conectado com sucesso ao MySQL no Docker!');
-    }
-});
+const notasDiario = [];
 
 // ==========================================
-// ROTAS DE AUTENTICAÇÃO (CADASTRO E LOGIN)
+// ROTAS DA API
 // ==========================================
 
-// Rota para Cadastrar Novo Usuário
-app.post('/api/cadastro', (req, res) => {
-    const { email, senha } = req.body;
-
-    if (!email || !senha) {
-        return res.status(400).json({ erro: 'E-mail e senha são obrigatórios.' });
-    }
-
-    const sql = 'INSERT INTO usuarios (email, senha) VALUES (?, ?)';
-    db.query(sql, [email, senha], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ erro: 'Este e-mail já está cadastrado ou ocorreu um erro.' });
-        }
-        res.status(201).json({ 
-            mensagem: 'Conta criada com sucesso!', 
-            usuario: { id: result.insertId, email } 
-        });
-    });
-});
-
-// Rota para Fazer Login
+// Rota 1: Login
 app.post('/api/login', (req, res) => {
     const { email, senha } = req.body;
 
@@ -58,64 +28,42 @@ app.post('/api/login', (req, res) => {
         return res.status(400).json({ erro: 'Preencha todos os campos.' });
     }
 
-    const sql = 'SELECT id, email FROM usuarios WHERE email = ? AND senha = ?';
-    db.query(sql, [email, senha], (err, results) => {
-        if (err || results.length === 0) {
-            return res.status(401).json({ erro: 'E-mail ou senha inválidos.' });
-        }
-        res.json({ 
-            mensagem: 'Login realizado com sucesso!', 
-            usuario: results[0] 
+    // Procura o usuário no array temporário
+    const usuario = usuarios.find(u => u.email.toLowerCase() === email.toLowerCase() && u.senha === senha);
+
+    if (!usuario) {
+        // Se não achar no array padrão, autoriza como paciente comum para testes
+        return res.json({
+            mensagem: 'Login comum realizado!',
+            usuario: { nome: email.split('@')[0], tipo: 'paciente' }
         });
+    }
+
+    res.json({
+        mensagem: 'Login realizado com sucesso!',
+        usuario: { nome: usuario.nome || usuario.email, tipo: usuario.tipo }
     });
 });
 
-// ==========================================
-// ROTAS DO DIÁRIO EMOCIONAL
-// ==========================================
-
-// Rota para Salvar Anotação no Diário
+// Rota 2: Salvar Nota no Diário
 app.post('/api/diario', (req, res) => {
-    const { usuario_id, texto } = req.body;
+    const { texto } = req.body;
 
-    if (!usuario_id || !texto) {
-        return res.status(400).json({ erro: 'Usuário e texto são obrigatórios.' });
+    if (!texto) {
+        return res.status(400).json({ erro: 'O texto não pode estar vazio.' });
     }
 
-    const sql = 'INSERT INTO diario (usuario_id, texto) VALUES (?, ?)';
-    db.query(sql, [usuario_id, texto], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ erro: 'Erro ao salvar nota no diário.' });
-        }
-        res.status(201).json({ mensagem: 'Anotação salva com sucesso no banco de dados!' });
+    const novaNota = { id: Date.now(), texto, data: new Date() };
+    notasDiario.push(novaNota);
+
+    res.status(201).json({
+        mensagem: 'Anotação salva com sucesso na API!',
+        nota: novaNota
     });
 });
 
-// ==========================================
-// ROTAS DE AGENDAMENTO DE CONSULTAS
-// ==========================================
-
-// Rota para Marcar Consulta
-app.post('/api/agendar', (req, res) => {
-    const { usuario_id, data_consulta, horario_consulta } = req.body;
-
-    if (!usuario_id || !data_consulta || !horario_consulta) {
-        return res.status(400).json({ erro: 'Preencha todos os dados da consulta.' });
-    }
-
-    const sql = 'INSERT INTO agendamentos (usuario_id, data_consulta, horario_consulta) VALUES (?, ?, ?)';
-    db.query(sql, [usuario_id, data_consulta, horario_consulta], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ erro: 'Erro ao agendar consulta.' });
-        }
-        res.status(201).json({ mensagem: 'Consulta agendada no banco de dados com sucesso!' });
-    });
-});
-
-// Inicia o Servidor
+// Inicialização do servidor na porta 3000
 const PORT = 3000;
 app.listen(PORT, () => {
-    console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
+    console.log(`🚀 API rodando sem banco em: http://localhost:${PORT}`);
 });

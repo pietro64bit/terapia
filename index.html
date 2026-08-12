@@ -7,7 +7,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght=700&family=Quicksand:wght=400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -15,37 +15,28 @@
 <body>
 
     <div class="borda-decorativa decorativa-top"></div>
-    <div class="borda-decorativa decorativa-bottom"></div>
 
-    <nav>
-        <div class="nav-esquerda">
+    <nav class="navbar">
+        <div class="nav-container">
             <div class="logo">
-                <img src="tree.png" alt="Logo Árvore da Vida" class="logo-img-flutuante">
+                <img src="tree.png" alt="Logo Árvore da Vida" class="logo-img">
                 <span>Master Mind</span>
             </div>
             
-            <div id="area-autenticacao">
+            <div class="nav-center">
+                <ul class="nav-links">
+                    <li><a href="#inicio">Início</a></li>
+                    <li><a href="#sobre">Sobre</a></li>
+                    <li><a href="#explorar-conteudos">Abordagem</a></li>
+                </ul>
+            </div>
+            
+            <div id="area-autenticacao" class="nav-right">
                 <button class="btn-login-nav" onclick="abrirModal('modal-login')">
                     <i class="fa-solid fa-user-lock"></i> Entrar
                 </button>
             </div>
-            
-            <div class="dropdown-futuro">
-                <button class="btn-explorar">Explorar Conteúdos <i class="fa-solid fa-chevron-down"></i></button>
-                <div class="dropdown-conteudo-abas">
-                    <a href="#explorar-conteudos" onclick="mudarAba('saude-mental')"><i class="fa-solid fa-seedling"></i> Métodos para Saúde Mental</a>
-                    <a href="#explorar-conteudos" onclick="mudarAba('respiracao')"><i class="fa-solid fa-wind"></i> Exercícios de Respiração</a>
-                    <a href="#explorar-conteudos" onclick="mudarAba('diario')"><i class="fa-solid fa-book-open"></i> Diário de Evolução</a>
-                    <a href="#explorar-conteudos" onclick="mudarAba('profissionais')"><i class="fa-solid fa-user-doctor"></i> Encontrar Profissionais</a>
-                </div>
-            </div>
         </div>
-        
-        <ul class="nav-links">
-            <li><a href="#">Início</a></li>
-            <li><a href="#sobre">Sobre Mim</a></li>
-            <li><a href="#explorar-conteudos">Abordagem</a></li>
-        </ul>
     </nav>
 
     <div id="modal-login" class="modal-auth">
@@ -114,24 +105,35 @@
         </div>
     </div>
 
-    <header class="hero">
+    <header id="inicio" class="hero">
         <div class="hero-container">
             <div class="hero-texto">
                 <h1>Master Mind</h1>
-                <p>Encontre o equilíbrio que sua mente precisa com um atendimento humano e acolhedor.</p>
-                <a href="#explorar-conteudos" onclick="mudarAba('profissionais')" class="contato-btn">
-                    <i class="fa-solid fa-user-doctor"></i> Encontrar Profissional
-                </a>
+                <p class="hero-subtitle">Transforme sua saúde mental com ferramentas comprovadas e atendimento humanizado.</p>
+                <div class="hero-buttons">
+                    <a href="#explorar-conteudos" class="btn-primary">
+                        <i class="fa-solid fa-circle-play"></i> Explorar Métodos
+                    </a>
+                    <a href="#explorar-conteudos" onclick="mudarAba('profissionais')" class="btn-secondary">
+                        <i class="fa-solid fa-user-doctor"></i> Encontrar Profissional
+                    </a>
+                </div>
             </div>
             
-            <div class="hero-ilustracao">
-                <img src="tree.png" alt="Árvore da Vida" class="tree-flutuante-destaque">
+            <div class="hero-visual">
+                <div class="hero-image-wrapper">
+                    <img src="tree.png" alt="Árvore da Vida" class="tree-destaque">
+                    <div class="glow-effect"></div>
+                </div>
             </div>
         </div>
     </header>
 
     <section id="explorar-conteudos" class="secao-abas">
-        <h2 class="titulo-secao">Espaço de Desenvolvimento</h2>
+        <div class="section-header">
+            <h2 class="titulo-secao">Espaço de Desenvolvimento</h2>
+            <p class="subtitulo-secao">Escolha a ferramenta que melhor se adequa ao seu momento</p>
+        </div>
         
         <div class="abas-botoes">
             <button class="aba-btn ativa" onclick="mudarAba('saude-mental')"><i class="fa-solid fa-seedling"></i> Métodos Clínicos</button>
@@ -143,30 +145,40 @@
         <div id="saude-mental" class="aba-conteudo ativa">
             <div class="grid-metodos">
                 <div class="metodo-card">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
                     <span class="tag-metodo">TCC</span>
                     <h3>Reestruturação Cognitiva</h3>
-                    <p>Aprenda a identificar e questionar pensamentos automáticos para reduzir a ansiedade instantaneamente.</p>
+                    <p>Aprenda a identificar e questionar pensamentos automáticos para reduzir a ansiedade instantaneamente com técnicas validadas cientificamente.</p>
+                    <a href="#" class="card-link">Saiba mais <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
                 <div class="metodo-card">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-spa"></i>
+                    </div>
                     <span class="tag-metodo">Foco</span>
                     <h3>Atenção Plena (Mindfulness)</h3>
                     <p>Exercícios de ancoragem sensorial para trazer sua mente de volta ao momento presente durante momentos de estresse.</p>
+                    <a href="#" class="card-link">Saiba mais <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
 
         <div id="respiracao" class="aba-conteudo">
             <div class="container-respiracao">
-                <h3>Respiração Quadrada (Box Breathing)</h3>
-                <p class="sub-respiracao">Técnica clínica utilizada para acalmar o sistema nervoso em momentos de pico de ansiedade.</p>
+                <div class="respiracao-header">
+                    <h3>Respiração Quadrada (Box Breathing)</h3>
+                    <p class="sub-respiracao">Técnica clínica utilizada para acalmar o sistema nervoso em momentos de pico de ansiedade. Dedique 2 minutos para sentir a diferença.</p>
+                </div>
                 
                 <div class="caixa-respiracao-guiada">
                     <div class="circulo-respiracao-wrapper">
                         <div class="circulo-respiracao-pulsante"></div>
                         <div class="texto-fase-respiracao">
-                            <span class="fase-1">Puxe o ar (4s)</span>
+                            <span class="fase-1">Inspire (4s)</span>
                             <span class="fase-2">Segure (4s)</span>
-                            <span class="fase-3">Solte o ar (4s)</span>
+                            <span class="fase-3">Expire (4s)</span>
                             <span class="fase-4">Aguarde (4s)</span>
                         </div>
                     </div>
@@ -176,10 +188,14 @@
 
         <div id="diario" class="aba-conteudo">
             <div class="container-diario">
-                <h3>Registro Emocional</h3>
-                <p>Escreva como foi o seu dia para organizar suas ideias e aliviar a sobrecarga mental.</p>
-                <textarea placeholder="Escreva aqui seus pensamentos..."></textarea>
-                <button class="contato-btn">Salvar Nota</button>
+                <div class="diario-header">
+                    <h3>Registro Emocional Diário</h3>
+                    <p>Escreva como foi o seu dia para organizar suas ideias e aliviar a sobrecarga mental. Seus registros são privados e seguros.</p>
+                </div>
+                <textarea placeholder="Como foi seu dia? Quais foram seus principais sentimentos? O que você aprendeu?"></textarea>
+                <button class="btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i> Salvar Nota
+                </button>
             </div>
         </div>
 
@@ -188,8 +204,10 @@
                 
                 <div id="painel-exclusivo-profissional" class="painel-profissional-box" style="display: none;">
                     <div class="painel-header">
-                        <h4><i class="fa-solid fa-user-gear"></i> Painel do Especialista (Modo Teste)</h4>
-                        <span class="tag-exclusiva"><i class="fa-solid fa-lock"></i> Exclusivo para Médicos</span>
+                        <div>
+                            <h4><i class="fa-solid fa-user-gear"></i> Painel do Especialista</h4>
+                            <span class="tag-exclusiva"><i class="fa-solid fa-lock"></i> Exclusivo para Médicos</span>
+                        </div>
                     </div>
                     <p>Bem-vindo, <strong>Dr. ZokaAlan</strong>. Aqui estão as suas ferramentas de gestão médica:</p>
                     
@@ -209,36 +227,48 @@
                     </div>
                 </div>
 
-                <h3>Encontre um Profissional</h3>
-                <p style="margin-bottom: 15px;">Busque por especialistas qualificados para te acompanhar.</p>
+                <div class="profissionais-header">
+                    <h3>Encontre um Profissional Qualificado</h3>
+                    <p>Conecte-se com especialistas verificados em saúde mental e bem-estar emocional.</p>
+                </div>
 
-                <div class="filtros-container" style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
-                    <input type="text" id="filtro-especialidade" placeholder="Buscar especialidade (ex: Neurologia, TCC)..." style="padding: 8px 12px; border-radius: 5px; border: 1px solid #ccc; flex: 1;">
-                    <select id="filtro-modalidade" style="padding: 8px 12px; border-radius: 5px; border: 1px solid #ccc;">
+                <div class="filtros-container">
+                    <input type="text" id="filtro-especialidade" placeholder="Buscar especialidade (ex: Neurologia, TCC)..." class="filtro-input">
+                    <select id="filtro-modalidade" class="filtro-select">
                         <option value="">Todas as modalidades</option>
                         <option value="online">Online</option>
                         <option value="presencial">Presencial</option>
                     </select>
-                    <button class="contato-btn" style="margin: 0;" onclick="carregarProfissionais()"><i class="fa-solid fa-magnifying-glass"></i> Filtrar</button>
+                    <button class="btn-primary" onclick="carregarProfissionais()"><i class="fa-solid fa-magnifying-glass"></i> Filtrar</button>
                 </div>
 
-                <div id="lista-profissionais" class="grid-metodos">
+                <div id="lista-profissionais" class="grid-profissionais">
                     <div class="card-prof">
-                        <div class="card-prof-avatar">
-                            <i class="fa-solid fa-user-doctor"></i>
+                        <div class="card-prof-header">
+                            <div class="card-prof-avatar">
+                                <i class="fa-solid fa-user-doctor"></i>
+                            </div>
+                            <div class="card-prof-badges">
+                                <span class="badge-verificado"><i class="fa-solid fa-circle-check"></i> Verificado</span>
+                            </div>
                         </div>
+                        
                         <h3>Dr. ZokaAlan</h3>
                         <span class="badge-especialidade"><i class="fa-solid fa-brain"></i> Neurologia</span>
-                        <span class="badge-verificado"><i class="fa-solid fa-circle-check"></i> Profissional Verificado</span>
                         
-                        <p class="prof-descricao">Especialista no tratamento de alterações do sistema nervoso, estresse crônico e regulação neuroemocional.</p>
+                        <p class="prof-descricao">Especialista no tratamento de alterações do sistema nervoso, estresse crônico e regulação neuroemocional com abordagem humanizada.</p>
                         
-                        <div class="prof-contato-info">
-                            <span><i class="fa-solid fa-phone"></i> (19) 98991-2719</span>
+                        <div class="prof-meta">
+                            <span class="meta-item"><i class="fa-solid fa-star"></i> 4.9/5 (28 avaliações)</span>
+                            <span class="meta-item"><i class="fa-solid fa-clock"></i> Responde em 2h</span>
                         </div>
                         
-                        <a href="https://wa.me/5519989912719?text=Olá%20Dr.%20ZokaAlan,%20vim%20pelo%20site%20Master%20Mind" target="_blank" class="contato-btn btn-whatsapp-prof">
-                            <i class="fa-brands fa-whatsapp"></i> Entrar em Contato
+                        <div class="prof-contato-info">
+                            <i class="fa-solid fa-phone"></i> (19) 98991-2719
+                        </div>
+                        
+                        <a href="https://wa.me/5519989912719?text=Olá%20Dr.%20ZokaAlan,%20vim%20pelo%20site%20Master%20Mind" target="_blank" class="btn-primary btn-whatsapp-prof">
+                            <i class="fa-brands fa-whatsapp"></i> Conversar no WhatsApp
                         </a>
                     </div>
                 </div>
@@ -246,40 +276,46 @@
         </div>
     </section>
 
-    <section id="sobre" class="secao-sobre-ampla">
-        <div class="sobre-container-full">
-            <div class="sobre-cabecalho">
-                <span class="badge-sobre"><i class="fa-solid fa-heart-pulse"></i> Propósito & Filosofia</span>
-                <h2>Sobre o Master Mind & Atuação Clínica</h2>
+    <section id="sobre" class="secao-sobre">
+        <div class="sobre-container">
+            <div class="sobre-header">
+                <span class="badge-sobre"><i class="fa-solid fa-heart-pulse"></i> Nossa Missão</span>
+                <h2>Sobre o Master Mind</h2>
             </div>
             
-            <div class="sobre-grid-texto">
-                <div class="sobre-bloco-principal">
+            <div class="sobre-content">
+                <div class="sobre-texto-principal">
                     <p class="texto-destaque-sobre">
-                        O <strong>Master Mind</strong> nasceu do desejo profundo de transformar a maneira como lidamos com as emoções diárias, oferecendo um espaço seguro, acolhedor e livre de julgamentos.
+                        O <strong>Master Mind</strong> foi criado com a convicção de que a saúde mental é o alicerce para uma vida plena e equilibrada.
                     </p>
                     <p>
-                        Acreditamos que a saúde mental não é a ausência de problemas, mas sim a capacidade de desenvolver ferramentas internas para atravessar momentos de crise com clareza, autonomia e serenidade.
+                        Combinamos abordagens clínicas comprovadas com um atendimento genuinamente humanizado, criando um espaço seguro onde você pode explorar seus sentimentos, desenvolver novas ferramentas e recuperar o controle sobre sua vida emocional.
                     </p>
                 </div>
 
-                <div class="sobre-cards-pilares">
+                <div class="sobre-pilares">
                     <div class="pilar-card">
-                        <div class="pilar-icone"><i class="fa-solid fa-brain"></i></div>
-                        <h4>Abordagem Científica</h4>
-                        <p>Utilizamos estratégias baseadas na Terapia Cognitivo-Comportamental (TCC) e práticas validadas de Mindfulness.</p>
+                        <div class="pilar-icone">
+                            <i class="fa-solid fa-microscope"></i>
+                        </div>
+                        <h4>Fundamentação Científica</h4>
+                        <p>Utilizamos estratégias baseadas em Terapia Cognitivo-Comportamental (TCC) e práticas validadas de Mindfulness com suporte em evidências.</p>
                     </div>
 
                     <div class="pilar-card">
-                        <div class="pilar-icone"><i class="fa-solid fa-hand-holding-heart"></i></div>
-                        <h4>Acolhimento Humano</h4>
-                        <p>Cada indivíduo possui um tempo e um ritmo único. Respeitamos sua trajetória e adaptamos o processo ao seu cotidiano.</p>
+                        <div class="pilar-icone">
+                            <i class="fa-solid fa-hands-praying"></i>
+                        </div>
+                        <h4>Acolhimento Genuíno</h4>
+                        <p>Compreendemos que cada pessoa tem seu próprio ritmo. Respeitamos sua trajetória e adaptamos as estratégias ao seu contexto de vida.</p>
                     </div>
 
                     <div class="pilar-card">
-                        <div class="pilar-icone"><i class="fa-solid fa-compass"></i></div>
-                        <h4>Desenvolvimento Prático</h4>
-                        <p>Foco em soluções reais, com exercícios de regulação emocional e autoconhecimento aplicáveis no dia a dia.</p>
+                        <div class="pilar-icone">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <h4>Aplicabilidade Prática</h4>
+                        <p>Oferecemos ferramentas reais e exercícios que você pode usar imediatamente para transformar seu dia a dia.</p>
                     </div>
                 </div>
             </div>
@@ -287,9 +323,33 @@
     </section>
 
     <footer>
-        <p>Master Mind &copy; 2026 | Todos os direitos reservados.</p>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Master Mind</h4>
+                <p>Transformando vidas através da saúde mental.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Links Rápidos</h4>
+                <ul>
+                    <li><a href="#inicio">Início</a></li>
+                    <li><a href="#sobre">Sobre</a></li>
+                    <li><a href="#explorar-conteudos">Métodos</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contato</h4>
+                <p>(19) 98991-2719</p>
+                <p>contato@mastermind.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Master Mind &copy; 2026 | Todos os direitos reservados.</p>
+        </div>
     </footer>
 
     <script src="login.js"></script>
+    <!-- Seus scripts da API -->
+    <script src="login.js"></script>
+    <script src="diario.js"></script>
 </body>
-</html>                                                                         
+</html>
