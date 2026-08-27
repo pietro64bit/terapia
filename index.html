@@ -114,7 +114,7 @@
                     <a href="#explorar-conteudos" class="btn-primary">
                         <i class="fa-solid fa-circle-play"></i> Explorar Métodos
                     </a>
-                    <a href="#explorar-conteudos" onclick="mudarAba('profissionais')" class="btn-secondary">
+                    <a href="#explorar-conteudos" onclick="mudarAba('cadastro-profissional')" class="btn-secondary">
                         <i class="fa-solid fa-user-doctor"></i> Encontrar Profissional
                     </a>
                 </div>
@@ -199,8 +199,17 @@
             </div>
         </div>
 
-        <div id="profissionais" class="aba-conteudo">
-            <div class="container-profissionais">
+        <div id="cadastro-profissional" class="aba-conteudo">
+            <form>
+                <input> type="Nome"> ,
+                <input> type="Email"> ,
+                <input> type="Senha"> ,
+                <input> type="Especialidade"> ,
+                <input> type="CPF"> ,
+                <input> type="Senha"> ,
+                <input> type="Registro Profissional"> ,
+            </form>
+            <div class="container-profissionais"> 
                 
                 <div id="painel-exclusivo-profissional" class="painel-profissional-box" style="display: none;">
                     <div class="painel-header">
@@ -351,5 +360,6 @@
     <!-- Seus scripts da API -->
     <script src="login.js"></script>
     <script src="diario.js"></script>
+    <script src="cadastro.js"></script>
 </body>
 </html>

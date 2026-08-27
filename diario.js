@@ -1,26 +1,34 @@
-// ==========================================
-// FUNÇÕES DO DIÁRIO DE ANOTAÇÕES
-// ==========================================
+// Carrega as anotações salvas no banco assim que abre a página
+async function carregarNotasDiario() {
+    try {
+        const resposta = await fetch('http://localhost:3000/api/diario');
+        if (resposta.ok) {
+            const notas = await resposta.json();
+            const listaNotas = document.getElementById('lista-diario');
+            if (listaNotas) {
+                listaNotas.innerHTML = ''; // Limpa antes de renderizar
+                notas.forEach(nota => adicionarNotaNaTela(nota));
+            }
+        }
+    } catch (erro) {
+        console.error('Erro ao buscar historico do diário:', erro);
+    }
+}
 
+// Salva nova anotação
 async function salvarNotaDiario(event) {
     event.preventDefault();
 
     const inputTexto = document.getElementById('texto-diario');
-
-    if (!inputTexto) {
-        alert('Campo de texto do diário não encontrado.');
-        return;
-    }
+    if (!inputTexto) return;
 
     const texto = inputTexto.value.trim();
-
     if (!texto) {
-        alert('Por favor, escreva alguma anotação antes de salvar!');
+        alert('Por favor, escreva alguma anotação!');
         return;
     }
 
     try {
-        // Envia a anotação para a API em memória no Node.js
         const resposta = await fetch('http://localhost:3000/api/diario', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -31,18 +39,18 @@ async function salvarNotaDiario(event) {
 
         if (resposta.ok) {
             alert(dados.mensagem);
-            inputTexto.value = ''; // Limpa a caixa de texto
-            adicionarNotaNaTela(dados.nota);
+            inputTexto.value = '';
+            // Recarrega a lista do banco para garantir ordem e persistência
+            carregarNotasDiario();
         } else {
             alert(dados.erro || 'Erro ao salvar anotação.');
         }
     } catch (erro) {
         console.error('Erro de conexão com a API:', erro);
-        alert('Servidor desconectado! Certifique-se de que a API está rodando no terminal.');
+        alert('Certifique-se de que a API está rodando no terminal com "node server.js".');
     }
 }
 
-// Função para renderizar a nota adicionada na lista visual
 function adicionarNotaNaTela(nota) {
     const listaNotas = document.getElementById('lista-diario');
     if (!listaNotas) return;
@@ -57,12 +65,12 @@ function adicionarNotaNaTela(nota) {
         <span class="data-nota">${dataFormatada}</span>
     `;
 
-    // Insere o novo item no topo da lista
-    listaNotas.prepend(item);
+    listaNotas.appendChild(item);
 }
 
-// Inicializa os ouvintes do diário ao carregar a página
 document.addEventListener('DOMContentLoaded', () => {
+    carregarNotasDiario();
+
     const formDiario = document.getElementById('form-diario');
     if (formDiario) {
         formDiario.addEventListener('submit', salvarNotaDiario);

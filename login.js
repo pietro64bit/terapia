@@ -79,7 +79,7 @@ async function fazerLogin(event) {
         }
 
         // Requisição HTTP POST para a API Node.js rodando em http://localhost:3000
-        const resposta = await fetch('http://localhost:3000/api/login', {
+        const resposta = await fetch('http://localhost:3006/api/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: usuario, senha: senha })
