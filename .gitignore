@@ -6,6 +6,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Banco de dados local SQLite
+banco.db
+*.db
+
 # Arquivos do ambiente do sistema operacional
 .DS_Store
 Thumbs.db

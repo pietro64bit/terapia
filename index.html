@@ -3,25 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Mind | Terapia e Bem-estar</title>
+    <title>Master Mind | Terapia, Saúde Mental e Bem-Estar</title>
     
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Estilos Principais -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="borda-decorativa decorativa-top"></div>
 
+    <!-- Barra de Navegação -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="logo">
+            <a href="#inicio" class="logo">
                 <img src="tree.png" alt="Logo Árvore da Vida" class="logo-img">
                 <span>Master Mind</span>
-            </div>
+            </a>
             
             <div class="nav-center">
                 <ul class="nav-links">
@@ -39,6 +44,10 @@
         </div>
     </nav>
 
+    <!-- Banner de Boas-Vindas para Usuários Logados -->
+    <div id="banner-usuario-logado" class="banner-usuario-logado" style="display: none;"></div>
+
+    <!-- Modal de Login -->
     <div id="modal-login" class="modal-auth">
         <div class="modal-conteudo">
             <span class="fechar-modal" onclick="fecharModal('modal-login')">&times;</span>
@@ -50,24 +59,27 @@
             <h3>Acessar Minha Conta</h3>
             <div class="dica-teste-login">
                 💡 <strong>Conta de Teste Especialista:</strong><br>
-                E-mail: <code>zokaalan</code> | Senha: <code>admin</code>
+                E-mail/Usuário: <code>zokaalan</code> | Senha: <code>admin</code>
             </div>
 
             <form class="form-auth" id="form-login" onsubmit="fazerLogin(event)">
                 <div class="input-grupo">
-                    <label><i class="fa-solid fa-envelope"></i> E-mail / Usuário</label>
+                    <label><i class="fa-solid fa-envelope"></i> E-mail ou Usuário</label>
                     <input type="text" id="email-login" placeholder="seuemail@exemplo.com ou zokaalan" required>
                 </div>
                 <div class="input-grupo">
                     <label><i class="fa-solid fa-key"></i> Senha</label>
                     <input type="password" id="senha-login" placeholder="Digite sua senha" required>
                 </div>
-                <button type="submit" class="btn-auth-acao">Entrar</button>
+                <button type="submit" class="btn-auth-acao">
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i> Entrar
+                </button>
             </form>
-            <p class="texto-alternar-auth">Caso não tenha conta, <a href="#" onclick="alternarAuth('modal-login', 'modal-cadastro')">clique aqui</a>.</p>
+            <p class="texto-alternar-auth">Ainda não tem conta? <a href="#" onclick="alternarAuth('modal-login', 'modal-cadastro')">Cadastre-se aqui</a>.</p>
         </div>
     </div>
 
+    <!-- Modal de Cadastro Geral (Paciente / Usuário) -->
     <div id="modal-cadastro" class="modal-auth">
         <div class="modal-conteudo">
             <span class="fechar-modal" onclick="fecharModal('modal-cadastro')">&times;</span>
@@ -77,10 +89,10 @@
             </div>
 
             <h3>Criar Nova Conta</h3>
-            <form class="form-auth" onsubmit="event.preventDefault();">
+            <form class="form-auth" id="form-cadastro" onsubmit="fazerCadastro(event)">
                 <div class="input-grupo">
                     <label><i class="fa-solid fa-user"></i> Nome Completo</label>
-                    <input type="text" id="nome-cadastro" placeholder="Seu nome completo" required>
+                    <input type="text" id="nome-cadastro" placeholder="Ex: Ana Clara Souza" required>
                 </div>
                 <div class="input-grupo">
                     <label><i class="fa-solid fa-envelope"></i> E-mail</label>
@@ -88,33 +100,102 @@
                 </div>
                 <div class="input-grupo">
                     <label><i class="fa-solid fa-lock"></i> Senha</label>
-                    <input type="password" id="senha-cadastro" placeholder="Crie uma senha forte" required>
+                    <input type="password" id="senha-cadastro" placeholder="Crie uma senha de acesso" required>
                 </div>
                 
                 <div class="input-grupo">
-                    <label><i class="fa-solid fa-users"></i> Tipo de Conta</label>
+                    <label><i class="fa-solid fa-users"></i> Perfil de Conta</label>
                     <div class="radio-group">
-                        <label><input type="radio" name="tipo_conta" value="paciente" checked> Paciente</label>
-                        <label><input type="radio" name="tipo_conta" value="profissional"> Profissional</label>
+                        <label><input type="radio" name="tipo_conta" value="paciente" checked> Paciente / Individual</label>
+                        <label><input type="radio" name="tipo_conta" value="profissional"> Especialista da Saúde</label>
                     </div>
                 </div>
 
-                <button type="submit" class="btn-auth-acao">Cadastrar</button>
+                <button type="submit" class="btn-auth-acao">
+                    <i class="fa-solid fa-user-plus"></i> Concluir Cadastro
+                </button>
             </form>
             <p class="texto-alternar-auth">Já possui conta? <a href="#" onclick="alternarAuth('modal-cadastro', 'modal-login')">Voltar ao login</a>.</p>
         </div>
     </div>
 
+    <!-- Modal Dedicado para Cadastro de Profissional / Especialista -->
+    <div id="modal-cadastro-profissional" class="modal-auth">
+        <div class="modal-conteudo modal-conteudo-largo">
+            <span class="fechar-modal" onclick="fecharModal('modal-cadastro-profissional')">&times;</span>
+            
+            <div class="modal-logo-wrapper">
+                <img src="tree.png" alt="Logo Árvore" class="logo-img-modal">
+            </div>
+
+            <h3>Cadastro de Especialista Clínico</h3>
+            <p class="modal-subtitulo">Faça parte do diretório de profissionais verificados do Master Mind.</p>
+
+            <form class="form-auth" id="form-modal-prof" onsubmit="salvarProfissionalModal(event)">
+                <div class="form-grid-2">
+                    <div class="input-grupo">
+                        <label><i class="fa-solid fa-user-doctor"></i> Nome Completo (com título)</label>
+                        <input type="text" id="prof-modal-nome" placeholder="Ex: Dr. Roberto Alencar" required>
+                    </div>
+                    <div class="input-grupo">
+                        <label><i class="fa-solid fa-envelope"></i> E-mail Profissional</label>
+                        <input type="email" id="prof-modal-email" placeholder="roberto@clinica.com" required>
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="input-grupo">
+                        <label><i class="fa-solid fa-lock"></i> Senha de Acesso</label>
+                        <input type="password" id="prof-modal-senha" placeholder="Crie uma senha segura" required>
+                    </div>
+                    <div class="input-grupo">
+                        <label><i class="fa-solid fa-brain"></i> Especialidade Principal</label>
+                        <input type="text" id="prof-modal-especialidade" placeholder="Ex: TCC, Neurologia, Psiquiatria" required>
+                    </div>
+                </div>
+
+                <div class="form-grid-3">
+                    <div class="input-grupo">
+                        <label><i class="fa-solid fa-id-card"></i> Registro (CRP / CRM)</label>
+                        <input type="text" id="prof-modal-crp" placeholder="Ex: CRP 06/123456" required>
+                    </div>
+                    <div class="input-grupo">
+                        <label><i class="fa-brands fa-whatsapp"></i> Telefone / WhatsApp</label>
+                        <input type="tel" id="prof-modal-whatsapp" placeholder="(19) 98991-2719" required>
+                    </div>
+                    <div class="input-grupo">
+                        <label><i class="fa-solid fa-location-dot"></i> Modalidade</label>
+                        <select id="prof-modal-modalidade" class="filtro-select">
+                            <option value="online">Online (Teleconsulta)</option>
+                            <option value="presencial">Presencial (Consultório)</option>
+                            <option value="hibrido">Híbrido (Ambos)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-grupo">
+                    <label><i class="fa-solid fa-align-left"></i> Apresentação / Abordagem Terapêutica</label>
+                    <textarea id="prof-modal-descricao" rows="3" placeholder="Descreva brevemente sua experiência e forma de trabalho..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-auth-acao">
+                    <i class="fa-solid fa-certificate"></i> Cadastrar e Publicar Perfil
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Seção Hero -->
     <header id="inicio" class="hero">
         <div class="hero-container">
             <div class="hero-texto">
                 <h1>Master Mind</h1>
-                <p class="hero-subtitle">Transforme sua saúde mental com ferramentas comprovadas e atendimento humanizado.</p>
+                <p class="hero-subtitle">Transforme sua saúde mental com ferramentas clínicas comprovadas, controle emocional diário e atendimento humanizado.</p>
                 <div class="hero-buttons">
-                    <a href="#explorar-conteudos" class="btn-primary">
+                    <a href="#explorar-conteudos" onclick="mudarAba('saude-mental')" class="btn-primary">
                         <i class="fa-solid fa-circle-play"></i> Explorar Métodos
                     </a>
-                    <a href="#explorar-conteudos" onclick="mudarAba('cadastro-profissional')" class="btn-secondary">
+                    <a href="#explorar-conteudos" onclick="mudarAba('profissionais')" class="btn-secondary">
                         <i class="fa-solid fa-user-doctor"></i> Encontrar Profissional
                     </a>
                 </div>
@@ -129,12 +210,14 @@
         </div>
     </header>
 
+    <!-- Seção Principal de Conteúdos e Ferramentas -->
     <section id="explorar-conteudos" class="secao-abas">
         <div class="section-header">
             <h2 class="titulo-secao">Espaço de Desenvolvimento</h2>
             <p class="subtitulo-secao">Escolha a ferramenta que melhor se adequa ao seu momento</p>
         </div>
         
+        <!-- Botoes de Abas -->
         <div class="abas-botoes">
             <button class="aba-btn ativa" onclick="mudarAba('saude-mental')"><i class="fa-solid fa-seedling"></i> Métodos Clínicos</button>
             <button class="aba-btn" onclick="mudarAba('respiracao')"><i class="fa-solid fa-wind"></i> Guia de Respiração</button>
@@ -142,6 +225,7 @@
             <button class="aba-btn" onclick="mudarAba('profissionais')"><i class="fa-solid fa-user-doctor"></i> Profissionais</button>
         </div>
 
+        <!-- ABA 1: Métodos Clínicos -->
         <div id="saude-mental" class="aba-conteudo ativa">
             <div class="grid-metodos">
                 <div class="metodo-card">
@@ -150,21 +234,43 @@
                     </div>
                     <span class="tag-metodo">TCC</span>
                     <h3>Reestruturação Cognitiva</h3>
-                    <p>Aprenda a identificar e questionar pensamentos automáticos para reduzir a ansiedade instantaneamente com técnicas validadas cientificamente.</p>
-                    <a href="#" class="card-link">Saiba mais <i class="fa-solid fa-arrow-right"></i></a>
+                    <p>Aprenda a identificar e questionar pensamentos automáticos distorcidos para reduzir a ansiedade instantaneamente com técnicas validadas cientificamente.</p>
+                    <a href="#diario" onclick="mudarAba('diario')" class="card-link">Praticar no Diário <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
+
                 <div class="metodo-card">
                     <div class="card-icon">
                         <i class="fa-solid fa-spa"></i>
                     </div>
                     <span class="tag-metodo">Foco</span>
                     <h3>Atenção Plena (Mindfulness)</h3>
-                    <p>Exercícios de ancoragem sensorial para trazer sua mente de volta ao momento presente durante momentos de estresse.</p>
-                    <a href="#" class="card-link">Saiba mais <i class="fa-solid fa-arrow-right"></i></a>
+                    <p>Exercícios de ancoragem sensorial para trazer sua mente de volta ao momento presente durante situações de sobrecarga ou estresse agudo.</p>
+                    <a href="#respiracao" onclick="mudarAba('respiracao')" class="card-link">Fazer Respiração <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <div class="metodo-card">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <span class="tag-metodo">Neurociência</span>
+                    <h3>Regulação Vagal</h3>
+                    <p>Estimulação do nervo vago através de respiração cadenciada e pausas conscientes para restabelecer o equilíbrio do sistema nervoso parassimpático.</p>
+                    <a href="#respiracao" onclick="mudarAba('respiracao')" class="card-link">Iniciar Exercício <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <div class="metodo-card">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-clipboard-check"></i>
+                    </div>
+                    <span class="tag-metodo">Clínica</span>
+                    <h3>RPD - Registro de Pensamentos</h3>
+                    <p>Ferramenta clássica de psicoterapia para registrar gatilhos, emoções e formular pensamentos alternativos mais saudáveis.</p>
+                    <a href="#diario" onclick="mudarAba('diario')" class="card-link">Abrir Diário <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
 
+        <!-- ABA 2: Guia de Respiração (Com Controle de Pausar, Retomar e Reiniciar) -->
         <div id="respiracao" class="aba-conteudo">
             <div class="container-respiracao">
                 <div class="respiracao-header">
@@ -174,117 +280,146 @@
                 
                 <div class="caixa-respiracao-guiada">
                     <div class="circulo-respiracao-wrapper">
-                        <div class="circulo-respiracao-pulsante"></div>
+                        <div id="circulo-pulsante" class="circulo-respiracao-pulsante"></div>
                         <div class="texto-fase-respiracao">
-                            <span class="fase-1">Inspire (4s)</span>
-                            <span class="fase-2">Segure (4s)</span>
-                            <span class="fase-3">Expire (4s)</span>
-                            <span class="fase-4">Aguarde (4s)</span>
+                            <span id="respiracao-nome-fase" class="respiracao-destaque-fase">Inspire (4s)</span>
                         </div>
                     </div>
+                </div>
+
+                <!-- Instrução descritiva da fase ativa -->
+                <p id="respiracao-dica-fase" class="respiracao-dica">Puxe o ar suavemente pelas narinas enchendo o abdômen.</p>
+
+                <!-- Barra de Controles Interativos -->
+                <div class="respiracao-controles">
+                    <button id="btn-toggle-respiracao" class="btn-respiracao-ctrl">
+                        <i id="icone-btn-respiracao" class="fa-solid fa-pause"></i>
+                        <span id="texto-btn-respiracao">Pausar</span>
+                    </button>
+                    <button id="btn-reset-respiracao" class="btn-respiracao-ctrl btn-secundario-respiracao">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Reiniciar</span>
+                    </button>
+                </div>
+
+                <div class="respiracao-info-meta">
+                    <span id="contador-ciclos-respiracao" class="badge-ciclos"><i class="fa-solid fa-arrows-spin"></i> 0 ciclos concluídos</span>
                 </div>
             </div>
         </div>
 
+        <!-- ABA 3: Meu Diário (Com Auto-Save, Persistência Total, Rastreador de Humor e Histórico) -->
         <div id="diario" class="aba-conteudo">
             <div class="container-diario">
                 <div class="diario-header">
                     <h3>Registro Emocional Diário</h3>
-                    <p>Escreva como foi o seu dia para organizar suas ideias e aliviar a sobrecarga mental. Seus registros são privados e seguros.</p>
+                    <p>Escreva como foi o seu dia para organizar suas ideias e aliviar a sobrecarga mental. Seus registros são privados, salvos em tempo real e não são perdidos ao sair ou atualizar.</p>
                 </div>
-                <textarea placeholder="Como foi seu dia? Quais foram seus principais sentimentos? O que você aprendeu?"></textarea>
-                <button class="btn-primary">
-                    <i class="fa-solid fa-floppy-disk"></i> Salvar Nota
-                </button>
+
+                <!-- Indicador de Auto-Save em Tempo Real -->
+                <div class="diario-status-autosave" id="diario-status-autosave">
+                    <i class="fa-solid fa-circle-check"></i> <span id="autosave-texto">Salvamento automático ativo</span>
+                </div>
+
+                <!-- Seletor de Humor do Dia -->
+                <div class="seletor-humor-container">
+                    <label class="humor-label"><i class="fa-solid fa-face-smile"></i> Como você se sente agora?</label>
+                    <div class="botoes-humor">
+                        <button type="button" class="btn-humor" data-humor="feliz" title="Feliz / Grato">😊 Feliz</button>
+                        <button type="button" class="btn-humor selecionado" data-humor="calmo" title="Tranquilo / Em paz">😌 Tranquilo</button>
+                        <button type="button" class="btn-humor" data-humor="neutro" title="Neutro / Regular">😐 Neutro</button>
+                        <button type="button" class="btn-humor" data-humor="ansioso" title="Ansioso / Tenso">😰 Ansioso</button>
+                        <button type="button" class="btn-humor" data-humor="triste" title="Triste / Cansado">😔 Triste</button>
+                    </div>
+                </div>
+
+                <!-- Caixa de Texto com Auto-salvamento contínuo -->
+                <textarea id="texto-diario" placeholder="Como foi seu dia? Quais foram seus principais sentimentos? O que você aprendeu ou quer desabafar?"></textarea>
+                
+                <div class="diario-botoes-acao">
+                    <button id="btn-salvar-diario" class="btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i> Salvar Nota
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="exportarDiario()">
+                        <i class="fa-solid fa-download"></i> Exportar Anotações
+                    </button>
+                </div>
+
+                <!-- Histórico de Notas Gravadas -->
+                <div class="historico-diario-container">
+                    <div class="historico-cabecalho">
+                        <h4><i class="fa-solid fa-clock-rotate-left"></i> Histórico de Reflexões</h4>
+                    </div>
+                    <ul id="lista-diario" class="lista-diario">
+                        <!-- Carregado dinamicamente via diario.js -->
+                    </ul>
+                </div>
             </div>
         </div>
 
-        <div id="cadastro-profissional" class="aba-conteudo">
-            <form>
-                <input> type="Nome"> ,
-                <input> type="Email"> ,
-                <input> type="Senha"> ,
-                <input> type="Especialidade"> ,
-                <input> type="CPF"> ,
-                <input> type="Senha"> ,
-                <input> type="Registro Profissional"> ,
-            </form>
+        <!-- ABA 4: Profissionais (Sem código solto, com busca corrigida e aviso de 'Profissional não avaliado') -->
+        <div id="profissionais" class="aba-conteudo">
             <div class="container-profissionais"> 
                 
+                <!-- Painel Exclusivo exibido para Médicos / Especialistas Logados -->
                 <div id="painel-exclusivo-profissional" class="painel-profissional-box" style="display: none;">
                     <div class="painel-header">
                         <div>
                             <h4><i class="fa-solid fa-user-gear"></i> Painel do Especialista</h4>
-                            <span class="tag-exclusiva"><i class="fa-solid fa-lock"></i> Exclusivo para Médicos</span>
+                            <span class="tag-exclusiva"><i class="fa-solid fa-shield-halved"></i> Acesso Restrito</span>
                         </div>
                     </div>
-                    <p>Bem-vindo, <strong>Dr. ZokaAlan</strong>. Aqui estão as suas ferramentas de gestão médica:</p>
+                    <p>Bem-vindo(a), <strong id="nome-prof-display">Dr. ZokaAlan</strong>. Aqui estão as suas ferramentas de gestão clínica:</p>
                     
                     <div class="grid-acoes-profissional">
-                        <button class="btn-acao-prof" onclick="alert('Módulo de Horários: Nenhuma consulta agendada para hoje.')">
+                        <button class="btn-acao-prof" onclick="alert('Módulo de Agenda: Consultas integradas disponíveis.')">
                             <i class="fa-solid fa-calendar-check"></i> Gerenciar Agenda
                         </button>
-                        <button class="btn-acao-prof" onclick="alert('Módulo de Pacientes: 0 pacientes vinculados.')">
+                        <button class="btn-acao-prof" onclick="alert('Módulo de Pacientes: Lista de prontuários em conformidade com o CFP.')">
                             <i class="fa-solid fa-users-medical"></i> Meus Pacientes
                         </button>
-                        <button class="btn-acao-prof" onclick="alert('Publicar Conteúdo: Recurso para postar exercícios de saúde mental.')">
+                        <button class="btn-acao-prof" onclick="alert('Publicação Clínica: Compartilhe novos exercícios e artigos.')">
                             <i class="fa-solid fa-file-circle-plus"></i> Publicar Método
                         </button>
-                        <button class="btn-acao-prof" onclick="alert('Configurações: Neurologia | Tel: (19) 98991-2719')">
-                            <i class="fa-solid fa-id-card"></i> Configurar CRM
+                        <button class="btn-acao-prof" onclick="abrirModal('modal-cadastro-profissional')">
+                            <i class="fa-solid fa-id-card"></i> Atualizar CRM/CRP
                         </button>
                     </div>
                 </div>
 
                 <div class="profissionais-header">
                     <h3>Encontre um Profissional Qualificado</h3>
-                    <p>Conecte-se com especialistas verificados em saúde mental e bem-estar emocional.</p>
+                    <p>Conecte-se com especialistas verificados em saúde mental, psicologia clínica, psiquiatria e neurologia.</p>
                 </div>
 
+                <!-- Barra de Filtros e Busca de Especialistas -->
                 <div class="filtros-container">
-                    <input type="text" id="filtro-especialidade" placeholder="Buscar especialidade (ex: Neurologia, TCC)..." class="filtro-input">
+                    <input type="text" id="filtro-especialidade" placeholder="Buscar por especialidade (ex: Neurologia, TCC, Ansiedade) ou nome..." class="filtro-input">
+                    
                     <select id="filtro-modalidade" class="filtro-select">
                         <option value="">Todas as modalidades</option>
                         <option value="online">Online</option>
                         <option value="presencial">Presencial</option>
                     </select>
-                    <button class="btn-primary" onclick="carregarProfissionais()"><i class="fa-solid fa-magnifying-glass"></i> Filtrar</button>
+
+                    <button class="btn-primary" onclick="carregarProfissionais()">
+                        <i class="fa-solid fa-magnifying-glass"></i> Filtrar
+                    </button>
+
+                    <button class="btn-secondary" onclick="abrirModal('modal-cadastro-profissional')">
+                        <i class="fa-solid fa-user-doctor"></i> Sou Especialista
+                    </button>
                 </div>
 
+                <!-- Grid de Profissionais (Preenchido dinamicamente com fallback "Profissional não avaliado") -->
                 <div id="lista-profissionais" class="grid-profissionais">
-                    <div class="card-prof">
-                        <div class="card-prof-header">
-                            <div class="card-prof-avatar">
-                                <i class="fa-solid fa-user-doctor"></i>
-                            </div>
-                            <div class="card-prof-badges">
-                                <span class="badge-verificado"><i class="fa-solid fa-circle-check"></i> Verificado</span>
-                            </div>
-                        </div>
-                        
-                        <h3>Dr. ZokaAlan</h3>
-                        <span class="badge-especialidade"><i class="fa-solid fa-brain"></i> Neurologia</span>
-                        
-                        <p class="prof-descricao">Especialista no tratamento de alterações do sistema nervoso, estresse crônico e regulação neuroemocional com abordagem humanizada.</p>
-                        
-                        <div class="prof-meta">
-                            <span class="meta-item"><i class="fa-solid fa-star"></i> 4.9/5 (28 avaliações)</span>
-                            <span class="meta-item"><i class="fa-solid fa-clock"></i> Responde em 2h</span>
-                        </div>
-                        
-                        <div class="prof-contato-info">
-                            <i class="fa-solid fa-phone"></i> (19) 98991-2719
-                        </div>
-                        
-                        <a href="https://wa.me/5519989912719?text=Olá%20Dr.%20ZokaAlan,%20vim%20pelo%20site%20Master%20Mind" target="_blank" class="btn-primary btn-whatsapp-prof">
-                            <i class="fa-brands fa-whatsapp"></i> Conversar no WhatsApp
-                        </a>
-                    </div>
+                    <!-- Cards de Especialistas serão injetados via profissionais.js -->
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Seção Sobre a Plataforma -->
     <section id="sobre" class="secao-sobre">
         <div class="sobre-container">
             <div class="sobre-header">
@@ -295,10 +430,10 @@
             <div class="sobre-content">
                 <div class="sobre-texto-principal">
                     <p class="texto-destaque-sobre">
-                        O <strong>Master Mind</strong> foi criado com a convicção de que a saúde mental é o alicerce para uma vida plena e equilibrada.
+                        O <strong>Master Mind</strong> foi concebido para democratizar o acesso a ferramentas psicológicas de alto impacto científico aliadas a um atendimento humanizado e seguro.
                     </p>
                     <p>
-                        Combinamos abordagens clínicas comprovadas com um atendimento genuinamente humanizado, criando um espaço seguro onde você pode explorar seus sentimentos, desenvolver novas ferramentas e recuperar o controle sobre sua vida emocional.
+                        Combinamos protocolos clínicos fundamentados na Terapia Cognitivo-Comportamental (TCC), neurociência aplicada e mindfulness, assegurando um espaço digital acolhedor onde seus dados, reflexões e evolução pessoal permanecem preservados com máxima privacidade.
                     </p>
                 </div>
 
@@ -308,58 +443,73 @@
                             <i class="fa-solid fa-microscope"></i>
                         </div>
                         <h4>Fundamentação Científica</h4>
-                        <p>Utilizamos estratégias baseadas em Terapia Cognitivo-Comportamental (TCC) e práticas validadas de Mindfulness com suporte em evidências.</p>
+                        <p>Estratégias estruturadas com respaldo em Terapia Cognitivo-Comportamental, regulação autonômica e evidências clínicas.</p>
                     </div>
 
                     <div class="pilar-card">
                         <div class="pilar-icone">
-                            <i class="fa-solid fa-hands-praying"></i>
+                            <i class="fa-solid fa-shield-heart"></i>
                         </div>
-                        <h4>Acolhimento Genuíno</h4>
-                        <p>Compreendemos que cada pessoa tem seu próprio ritmo. Respeitamos sua trajetória e adaptamos as estratégias ao seu contexto de vida.</p>
+                        <h4>Privacidade & Segurança</h4>
+                        <p>Seus registros diários e notas emocionais são criptografados e salvos localmente e na nuvem com proteção total.</p>
                     </div>
 
                     <div class="pilar-card">
                         <div class="pilar-icone">
                             <i class="fa-solid fa-bolt"></i>
                         </div>
-                        <h4>Aplicabilidade Prática</h4>
-                        <p>Oferecemos ferramentas reais e exercícios que você pode usar imediatamente para transformar seu dia a dia.</p>
+                        <h4>Praticidade Diária</h4>
+                        <p>Técnicas de respiração e diário que você pode praticar em menos de 2 minutos para aliviar sobrecargas emocionais.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Rodapé -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <h4>Master Mind</h4>
-                <p>Transformando vidas através da saúde mental.</p>
+                <div class="footer-logo">
+                    <img src="tree.png" alt="Logo" class="logo-img-footer">
+                    <h4>Master Mind</h4>
+                </div>
+                <p>Transformando vidas através do equilíbrio emocional e saúde mental integrativa.</p>
             </div>
             <div class="footer-section">
-                <h4>Links Rápidos</h4>
+                <h4>Navegação Rápida</h4>
                 <ul>
                     <li><a href="#inicio">Início</a></li>
-                    <li><a href="#sobre">Sobre</a></li>
-                    <li><a href="#explorar-conteudos">Métodos</a></li>
+                    <li><a href="#sobre">Sobre Nós</a></li>
+                    <li><a href="#explorar-conteudos" onclick="mudarAba('saude-mental')">Métodos Clínicos</a></li>
+                    <li><a href="#explorar-conteudos" onclick="mudarAba('respiracao')">Guia de Respiração</a></li>
+                    <li><a href="#explorar-conteudos" onclick="mudarAba('diario')">Meu Diário</a></li>
+                    <li><a href="#explorar-conteudos" onclick="mudarAba('profissionais')">Especialistas</a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h4>Contato</h4>
-                <p>(19) 98991-2719</p>
-                <p>contato@mastermind.com</p>
+                <h4>Canais de Contato</h4>
+                <p><i class="fa-solid fa-phone"></i> (19) 98991-2719</p>
+                <p><i class="fa-solid fa-envelope"></i> contato@mastermind.com</p>
+                <p><i class="fa-brands fa-whatsapp"></i> Atendimento via WhatsApp</p>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>Master Mind &copy; 2026 | Todos os direitos reservados.</p>
+            <p>Master Mind &copy; 2026 | Todos os direitos reservados. Em caso de crise ou urgência psiquiátrica, ligue 188 (CVV).</p>
         </div>
     </footer>
 
-    <script src="login.js"></script>
-    <!-- Seus scripts da API -->
-    <script src="login.js"></script>
+    <!-- Firebase SDK (CDN Oficial) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <!-- Módulos da Aplicação Master Mind -->
+    <script src="firebase-config.js"></script>
+    <script src="respiracao.js"></script>
+    <script src="profissionais.js"></script>
     <script src="diario.js"></script>
     <script src="cadastro.js"></script>
+    <script src="login.js"></script>
 </body>
 </html>
